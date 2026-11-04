@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jobs &amp; Vibes</title>
+  <meta name="description" content="A vibe dashboard on the U.S. unemployment rate, October 2026, by Aarya Raut.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="topnav" aria-label="Sections">
+  <a class="brand" href="#top">Jobs &amp; Vibes</a>
+  <div class="navlinks">
+    <a href="#data">Data</a>
+    <a href="#vibe">Vibe Meter</a>
+    <a href="#loop">Confidence Loop</a>
+    <a href="#wealth">Wealth Effect</a>
+    <a href="#fiscal">Fiscal Policy</a>
+    <a href="#fed">Fed Pitch</a>
+    <a href="#plan">Action Plan</a>
+    <a href="#sources">Sources</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <h1>Jobs &amp; Vibes: Is America Working — and Does It Feel Like It?</h1>
+    <p class="subtitle">An economist's dashboard on the U.S. unemployment rate, October 2026</p>
+    <p class="byline">By Aarya Raut · Data current as of October 30, 2026</p>
+
+    <div class="kpis">
+      <div class="kpi">
+        <span class="kpi-label">Unemployment rate</span>
+        <span class="kpi-value">4.2%<sup><a href="#src-1">[1]</a></sup></span>
+        <span class="kpi-sub">Sep 2026 (latest)</span>
+      </div>
+      <div class="kpi">
+        <span class="kpi-label">vs. 1 year ago</span>
+        <span class="kpi-value">↓ 0.2 pts<sup><a href="#src-2">[2]</a></sup></span>
+        <span class="kpi-sub">was 4.4% in Sep 2025</span>
+      </div>
+      <div class="kpi">
+        <span class="kpi-label">vs. 3 years ago</span>
+        <span class="kpi-value">↑ 0.5 pts<sup><a href="#src-2">[2]</a></sup></span>
+        <span class="kpi-sub">was 3.7% in Sep 2023</span>
+      </div>
+      <div class="kpi">
+        <span class="kpi-label">Jobs added (Sep)</span>
+        <span class="kpi-value">+29,000<sup><a href="#src-1">[1]</a><a href="#src-3">[3]</a></sup></span>
+        <span class="kpi-sub">well below ~90k forecast</span>
+      </div>
+    </div>
+
+    <p class="verdict">The numbers say <em>stable</em>. The mood says <em>worried</em>. Vibe rating: <strong>CAUTIOUS</strong> (leaning toward Concern).</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- 1. DATA -->
+<section id="data" class="section accent-blue">
+  <p class="eyebrow">Component 1 · The Data</p>
+  <h2>The Trendline</h2>
+
+  <div class="card">
+    <div class="chart-toolbar">
+      <h3 class="chart-title">U.S. Unemployment Rate, 2019–2026 (Seasonally Adjusted)</h3>
+      <div class="seg" role="group" aria-label="Chart range">
+        <button type="button" id="view-full" aria-pressed="true">Full view</button>
+        <button type="button" id="view-zoom" aria-pressed="false">Zoom: 2023–now</button>
+      </div>
+    </div>
+    <div class="chart-box">
+      <canvas id="unrateChart" role="img"
+        aria-label="Line chart of the U.S. unemployment rate from January 2019 to September 2026. It spikes to 14.8% in April 2020, falls to a low of 3.4% in 2023, rises to 4.5% in November 2025, and is 4.2% in September 2026. The period from March 2020 on is shaded as the post-pandemic period. October 2025 has no data."></canvas>
+    </div>
+    <p class="chart-source">Data: U.S. Bureau of Labor Statistics via FRED (UNRATE)<sup><a href="#src-2">[2]</a></sup>. Chart created by Aarya Raut. No October 2025 value exists because the government shutdown stopped BLS from collecting it<sup><a href="#src-4">[4]</a></sup>.</p>
+
+    <ol class="event-key" aria-label="Event markers on the chart">
+      <li><b>Apr 2020</b> COVID lockdowns: record spike to 14.8%<sup><a href="#src-2">[2]</a></sup></li>
+      <li><b>Mar 2022</b> Fed begins rate hikes<sup><a href="#src-5">[5]</a></sup></li>
+      <li><b>Sep 2025</b> Fed starts cutting rates<sup><a href="#src-6">[6]</a></sup></li>
+      <li><b>Nov 2025</b> 4.5%: 4-year high<sup><a href="#src-2">[2]</a></sup></li>
+      <li><b>Mar 2026</b> Iran war oil shock<sup><a href="#src-9">[9]</a></sup></li>
+      <li><b>Sep 2026</b> Fed hikes for 1st time since 2023<sup><a href="#src-7">[7]</a><a href="#src-8">[8]</a></sup></li>
+    </ol>
+
+    <details class="data-table">
+      <summary>View the chart data as a table</summary>
+      <div class="table-scroll"><table id="unrateTable"><thead><tr><th>Month</th><th>Rate (%)</th></tr></thead><tbody></tbody></table></div>
+    </details>
+  </div>
+
+  <div class="card caption">
+    <h3>What the graph shows</h3>
+    <p>This graph shows the U.S. unemployment rate from 2019 to 2026, with the post-pandemic period shaded. Unemployment spiked to record levels in spring 2020 when COVID shut down the economy, then fell quickly to historic lows near 3.5% by 2023 as businesses reopened. Since then, the rate has slowly crept up, reaching a four-year high of 4.5% in November 2025 before easing back to 4.2% by September 2026. The flat line over the past several months shows a "low-hire, low-fire" job market: few people are being laid off, but companies are adding very few new jobs. Overall, the trend suggests the labor market is stable but not improving.</p>
+  </div>
+
+  <div class="chips" aria-label="Supporting statistics">
+    <span class="chip">Labor force participation: 61.8% (62.5% a year earlier)<sup><a href="#src-1">[1]</a></sup></span>
+    <span class="chip">Long-term unemployed (27+ wks): 1.9M = 27.1% of unemployed<sup><a href="#src-1">[1]</a></sup></span>
+    <span class="chip">Black unemployment rose to 7.0% (from 6.0%)<sup><a href="#src-1">[1]</a></sup></span>
+    <span class="chip">Pay +3.0%/yr<sup><a href="#src-1">[1]</a></sup> vs. inflation 3.7%<sup><a href="#src-13">[13]</a></sup> → <b>real wages falling</b></span>
+    <span class="chip">Job openings: ~7.1M (Aug 2026)<sup><a href="#src-14">[14]</a></sup></span>
+  </div>
+
+  <div class="card">
+    <h3>Research Questions</h3>
+    <dl class="qa">
+      <dt>1. What is the current value?</dt>
+      <dd>4.2% in September 2026, with about 7.1 million people unemployed<sup><a href="#src-1">[1]</a></sup>.</dd>
+      <dt>2. How does it compare to 1 year ago?</dt>
+      <dd>Down 0.2 points from 4.4% in September 2025, which is slightly better<sup><a href="#src-2">[2]</a></sup>.</dd>
+      <dt>3. How does it compare to 3 years ago?</dt>
+      <dd>Up 0.5 points from 3.7% in September 2023, so the job market is looser than during the post-pandemic boom<sup><a href="#src-2">[2]</a></sup>. (BLS first reported 3.8% for that month<sup><a href="#src-10">[10]</a></sup>; it was later revised to 3.7%.)</dd>
+      <dt>4. What major events affected it?</dt>
+      <dd>COVID shutdowns (the 2020 spike)<sup><a href="#src-2">[2]</a></sup>, rapid reopening (2021–22), Fed rate hikes cooling hiring (2022–23)<sup><a href="#src-5">[5]</a></sup>, the 2025 government shutdown<sup><a href="#src-4">[4]</a></sup> and weak 2025 hiring pushing the rate to a 4-year high of 4.5% in November 2025<sup><a href="#src-2">[2]</a></sup>, a February 2026 loss of 92,000 jobs<sup><a href="#src-11">[11]</a></sup>, the Iran war oil shock starting in March 2026<sup><a href="#src-9">[9]</a></sup>, AI-related hiring freezes, especially for entry-level jobs<sup><a href="#src-12">[12]</a></sup>, and the Fed's September 2026 rate hike<sup><a href="#src-7">[7]</a></sup>.</dd>
+      <dt>5. Is it improving, declining, or stable?</dt>
+      <dd><strong>Stable.</strong> BLS says the rate has stayed between 4.1% and 4.3% since March 2026<sup><a href="#src-1">[1]</a></sup>. Hiring is very slow, though: only +29,000 jobs in September, and July and August were revised down by 60,000 combined<sup><a href="#src-1">[1]</a></sup>.</dd>
+    </dl>
+  </div>
+</section>
+
+<!-- 2. VIBE METER -->
+<section id="vibe" class="section accent-purple">
+  <p class="eyebrow">Component 2 · The Feeling</p>
+  <h2>The Vibe Meter</h2>
+
+  <div class="card gauge-card">
+    <svg id="gauge" viewBox="0 0 340 200" role="img" aria-labelledby="gauge-title gauge-desc">
+      <title id="gauge-title">Vibe Meter</title>
+      <desc id="gauge-desc">A gauge with five zones from left to right: Panic, Concern, Cautious, Optimistic, Exuberance. The needle points to Cautious, leaning toward Concern.</desc>
+      <g id="gauge-zones"></g>
+      <g id="needle" transform="rotate(0 170 170)">
+        <line x1="170" y1="170" x2="62" y2="170" stroke="#0f172a" stroke-width="5" stroke-linecap="round"/>
+      </g>
+      <circle cx="170" cy="170" r="10" fill="#0f172a"/>
+    </svg>
+    <p class="gauge-rating">Today's Rating: <strong>CAUTIOUS</strong></p>
+    <p class="zone-def" id="zone-def" aria-live="polite">Hover over or tap a zone to see what it means.</p>
+  </div>
+
+  <div class="evidence">
+    <div class="card ev-col worried">
+      <h3>😟 Worried signals</h3>
+      <ul>
+        <li>University of Michigan consumer sentiment was 48.0 in Oct 2026, a five-month low<sup><a href="#src-15">[15]</a></sup> and not far above May 2026's all-time record low of 44.8<sup><a href="#src-16">[16]</a></sup>.</li>
+        <li>Only +29k jobs in September; July and August were revised down 60k<sup><a href="#src-1">[1]</a></sup>.</li>
+        <li>Wages (+3.0%) are losing to inflation (3.7%)<sup><a href="#src-1">[1]</a><a href="#src-13">[13]</a></sup>.</li>
+        <li>The Conference Board's "jobs plentiful" minus "hard to get" gap is only +5.3%, which is historically weak<sup><a href="#src-17">[17]</a></sup>.</li>
+      </ul>
+    </div>
+    <div class="card ev-col steady">
+      <h3>🙂 Steady signals</h3>
+      <ul>
+        <li>Unemployment is still low by historical standards at 4.2%<sup><a href="#src-1">[1]</a></sup>.</li>
+        <li>Conference Board confidence jumped to 91.7 in October, back to June levels, on better views of jobs<sup><a href="#src-17">[17]</a></sup>.</li>
+        <li>Real GDP grew at a strong 3.4% annual rate in Q3 2026<sup><a href="#src-18">[18]</a></sup>.</li>
+        <li>Layoffs remain low: 2026 job cuts through September were down 40% from a year earlier<sup><a href="#src-3">[3]</a></sup>.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card defense">
+    <h3>Rating Defense</h3>
+    <p>I rate today's economy <strong>Cautious</strong>, leaning toward Concern. On paper, the job market looks okay: unemployment is 4.2%, layoffs are low, and GDP grew 3.4% last quarter. But Americans don't <em>feel</em> secure. Hiring has nearly stalled, wages are rising more slowly than prices, and University of Michigan consumer sentiment sits near the lowest level ever recorded. People who already have jobs are mostly holding on, but people looking for work, especially young and entry-level workers, are struggling. That mix of solid data and anxious feelings is exactly what "mixed signals" means.</p>
+  </div>
+
+  <div class="card">
+    <h3>Research Questions</h3>
+    <dl class="qa">
+      <dt>1. How are news organizations describing the economy?</dt>
+      <dd>As a "low-hire, low-fire" job market that is stable but stuck<sup><a href="#src-22">[22]</a></sup>, with worries about surging energy prices and inflation<sup><a href="#src-3">[3]</a></sup>.</dd>
+      <dt>2. Are experts optimistic or worried?</dt>
+      <dd>Mostly cautious. Economists see no broad rise in layoffs, but expect the Iran war's high energy prices and supply strains to weigh on the job market by the end of 2026 and into 2027<sup><a href="#src-22">[22]</a></sup>.</dd>
+      <dt>3. Do all sources interpret the data the same way?</dt>
+      <dd>No. The Fed saw the economy as strong enough to raise rates to fight inflation<sup><a href="#src-7">[7]</a></sup>, and two officials wanted another hike in October<sup><a href="#src-26">[26]</a></sup>, while many economists see weak hiring as a warning sign<sup><a href="#src-22">[22]</a></sup>. Two consumer surveys even moved in opposite directions in October (UMich down, Conference Board up)<sup><a href="#src-15">[15]</a><a href="#src-17">[17]</a></sup>.</dd>
+      <dt>4. Where would you place today's mood and why?</dt>
+      <dd>Cautious. See the Rating Defense above.</dd>
+    </dl>
+  </div>
+
+  <h3 class="sub-h">Media Evidence</h3>
+  <div class="headlines">
+    <article class="card headline pos">
+      <span class="tag">Positive</span>
+      <h4><a href="https://www.bloomberg.com/news/articles/2026-10-27/us-consumer-confidence-increases-for-first-time-in-four-months" target="_blank" rel="noopener">"US Consumer Confidence Rises for First Time in Four Months"</a></h4>
+      <p class="meta">Bloomberg · Oct 27, 2026<sup><a href="#src-20">[20]</a></sup></p>
+      <p>Americans felt better about jobs and business conditions in October.</p>
+    </article>
+    <article class="card headline neg">
+      <span class="tag">Negative</span>
+      <h4><a href="https://www.wunc.org/2026-10-02/the-u-s-added-only-29-000-jobs-in-september-as-job-market-lacks-spark" target="_blank" rel="noopener">"The U.S. added only 29,000 jobs in September as job market lacks spark"</a></h4>
+      <p class="meta">NPR · Oct 2, 2026<sup><a href="#src-19">[19]</a></sup></p>
+      <p>Hiring came in far below forecasts and unemployment ticked up.</p>
+    </article>
+    <article class="card headline neu">
+      <span class="tag">Neutral</span>
+      <h4><a href="https://www.bls.gov/opub/ted/2026/unemployment-rate-little-changed-at-4-2-percent-in-september-2026.htm" target="_blank" rel="noopener">"Unemployment rate little changed at 4.2 percent in September 2026"</a></h4>
+      <p class="meta">BLS <i>The Economics Daily</i> · Oct 2026<sup><a href="#src-21">[21]</a></sup></p>
+      <p>The official data shows the job market holding steady.</p>
+    </article>
+  </div>
+</section>
+
+<!-- 3. CONFIDENCE LOOP -->
+<section id="loop" class="section accent-teal">
+  <p class="eyebrow">Component 3 · The Logic</p>
+  <h2>The Confidence Loop</h2>
+
+  <div class="card">
+    <div class="loop-head">
+      <p id="loop-label" class="loop-label" aria-live="polite">Showing: <strong>Unemployment RISES</strong> (downward spiral, the current risk)</p>
+      <button type="button" id="loop-toggle" class="btn" aria-pressed="false">Show reverse direction ↔</button>
+    </div>
+    <p class="loop-q5"><b>Opposite direction:</b> when unemployment falls, the same steps run in reverse and create an upward spiral. Use the button to see it.</p>
+
+    <div class="loop" id="loop-grid">
+      <div class="lbox" data-step="1"></div>
+      <button type="button" class="larrow a-r" data-arrow="1" aria-label="Arrow from step 1 to step 2">→</button>
+      <div class="lbox" data-step="2"></div>
+      <button type="button" class="larrow a-r" data-arrow="2" aria-label="Arrow from step 2 to step 3">→</button>
+      <div class="lbox" data-step="3"></div>
+      <button type="button" class="larrow a-d" data-arrow="3" aria-label="Arrow from step 3 to step 4">↓</button>
+      <div class="lbox" data-step="4"></div>
+      <button type="button" class="larrow a-l" data-arrow="4" aria-label="Arrow from step 4 to step 5">←</button>
+      <div class="lbox" data-step="5"></div>
+      <button type="button" class="larrow a-l" data-arrow="5" aria-label="Arrow from step 5 to step 6">←</button>
+      <div class="lbox" data-step="6"></div>
+      <button type="button" class="larrow a-u" data-arrow="6" aria-label="Arrow from step 6 back to step 1">↑</button>
+      <div class="loop-center" id="loop-center">🔁 Downward spiral</div>
+    </div>
+    <p class="arrow-tip" id="arrow-tip" aria-live="polite">Hover over or tap an arrow to see why each step leads to the next.</p>
+  </div>
+
+  <div class="callout">
+    <strong>Where are we now?</strong> We're in a <em>stalled</em> loop. Unemployment isn't rising fast, but hiring is so slow that confidence is weak. Real GDP still grew 3.4% in Q3 2026<sup><a href="#src-18">[18]</a></sup>, so the downward spiral hasn't started.
+  </div>
+</section>
+
+<!-- 4. WEALTH EFFECT -->
+<section id="wealth" class="section accent-indigo">
+  <p class="eyebrow">Component 4 · Optional</p>
+  <h2>The Wealth Effect</h2>
+  <div class="card">
+    <p>When stock prices or home values rise, people <em>feel</em> richer even if their paycheck hasn't changed. Investors and homeowners tend to spend more, which boosts business sales and can lead companies to hire, helping lower unemployment. Through the <strong>multiplier effect</strong>, one person's extra spending becomes another person's income: a homeowner spends $1,000 on repairs, the contractor spends it at restaurants, and restaurant workers earn more. But the wealth effect mostly helps people who already own stocks or homes; unemployed and lower-income workers benefit less, so it may not fix feelings of job insecurity. Overall, rising wealth slightly <strong>strengthens</strong> the job market, but it can't fully offset worries about weak hiring and high prices.</p>
+    <ol class="chain" aria-label="Multiplier chain">
+      <li>Asset values ↑</li>
+      <li>Feel wealthier</li>
+      <li>Spend $1,000</li>
+      <li>Contractor income</li>
+      <li>Restaurant spending</li>
+      <li>Workers' income</li>
+      <li>Hiring ↑</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 5. FISCAL POLICY -->
+<section id="fiscal" class="section accent-amber">
+  <p class="eyebrow">Component 5 · Government</p>
+  <h2>Fiscal Policy Connection</h2>
+
+  <div class="fiscal-grid">
+    <div class="card fcard good">
+      <h3>⬆️ Increase government spending</h3>
+      <p class="fx"><span>Spending:</span> more demand, more contracts (infrastructure, job training)</p>
+      <p class="fy">⬇️ Unemployment <b>falls</b></p>
+    </div>
+    <div class="card fcard good">
+      <h3>⬇️ Cut taxes</h3>
+      <p class="fx"><span>Spending:</span> people keep more income, so they spend more</p>
+      <p class="fy">⬇️ Unemployment <b>falls</b></p>
+    </div>
+    <div class="card fcard bad">
+      <h3>⬇️ Cut government spending</h3>
+      <p class="fx"><span>Spending:</span> less demand, fewer public jobs and contracts</p>
+      <p class="fy">⬆️ Unemployment <b>rises</b></p>
+    </div>
+    <div class="card fcard bad">
+      <h3>⬆️ Raise taxes</h3>
+      <p class="fx"><span>Spending:</span> less take-home pay, so people spend less</p>
+      <p class="fy">⬆️ Unemployment <b>rises</b></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Research Questions</h3>
+    <dl class="qa">
+      <dt>1. How does government spending affect unemployment?</dt>
+      <dd>It creates jobs directly (public projects) and indirectly (contractors, suppliers), which lowers unemployment.</dd>
+      <dt>2. How do tax cuts affect it?</dt>
+      <dd>They raise disposable income, so people spend more and businesses hire.</dd>
+      <dt>3. How do tax increases affect it?</dt>
+      <dd>They reduce spending, which can slow hiring.</dd>
+      <dt>4. What should the government do during a recession?</dt>
+      <dd>Use <strong>expansionary</strong> fiscal policy: raise spending and/or cut taxes.</dd>
+      <dt>5. What should it do during high inflation?</dt>
+      <dd>Use <strong>contractionary</strong> fiscal policy: cut spending and/or raise taxes to cool demand.</dd>
+    </dl>
+  </div>
+
+  <div class="callout amber">
+    <strong>Current context</strong>
+    <ul>
+      <li>The One Big Beautiful Bill Act (signed July 2025) is delivering roughly $285 billion of fiscal stimulus in 2026 through tax cuts, nearly 1% of GDP<sup><a href="#src-24">[24]</a></sup>.</li>
+      <li>The FY2026 federal deficit came in at about $2.0 trillion (6.2% of GDP), $140 billion more than CBO had projected<sup><a href="#src-25">[25]</a></sup>.</li>
+      <li>Inflation is 3.7%, well above the 2% target<sup><a href="#src-13">[13]</a></sup>.</li>
+    </ul>
+  </div>
+
+  <div class="card advisory">
+    <span class="badge">Recommendation: MAINTAIN</span>
+    <h3>Policy Advisory</h3>
+    <p><strong>Maintain overall spending and taxes. No new broad stimulus, but use targeted help.</strong> The economy isn't in a recession (GDP grew 3.4% and unemployment is 4.2%), and inflation is already high at 3.7%, so a big new round of tax cuts or spending would risk pushing prices even higher, especially since 2026 already got a large boost from tax cuts and the deficit is already $2 trillion. Raising taxes or cutting spending now would also be risky because hiring is so weak. Instead, the government should keep total spending steady while shifting money toward <strong>targeted programs</strong>: job-training and apprenticeship programs for entry-level workers losing out to AI, and support for the 1.9 million long-term unemployed<sup><a href="#src-1">[1]</a></sup>. This helps people find work without overheating the whole economy.</p>
+  </div>
+</section>
+
+<!-- 6. FED PITCH -->
+<section id="fed" class="section accent-green">
+  <p class="eyebrow">Monetary Policy</p>
+  <h2>The Fed Pitch</h2>
+
+  <div class="callout slate">
+    <strong>Current setting:</strong> federal funds rate target <b>3.75%–4.00%</b>, after a 25-basis-point hike on September 16, 2026<sup><a href="#src-7">[7]</a></sup> (the first hike since July 2023<sup><a href="#src-8">[8]</a></sup>) and a hold on October 28, 2026, by a 10–2 vote, with two members wanting another hike<sup><a href="#src-26">[26]</a></sup>. Fed Chair: <b>Kevin Warsh</b> (confirmed May 2026)<sup><a href="#src-28">[28]</a></sup>. Next FOMC meeting: December 8–9, 2026<sup><a href="#src-27">[27]</a></sup>.
+  </div>
+
+  <div class="fed-options">
+    <div class="card fopt no" tabindex="0">
+      <span class="fv">❌</span>
+      <h3>Raise rates</h3>
+      <p class="whynot">Hiring is already near a standstill; higher borrowing costs could push unemployment up.</p>
+    </div>
+    <div class="card fopt yes">
+      <span class="pick">✅ MY RECOMMENDATION</span>
+      <h3>Hold steady</h3>
+      <p>Balances both halves of the Fed's dual mandate: stable prices and maximum employment.</p>
+    </div>
+    <div class="card fopt no" tabindex="0">
+      <span class="fv">❌</span>
+      <h3>Lower rates</h3>
+      <p class="whynot">Inflation rose to 3.7% in September from 3.4%<sup><a href="#src-13">[13]</a></sup>; a cut could make prices worse.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Analysis Framework</h3>
+    <dl class="qa">
+      <dt>1. What does the indicator suggest?</dt>
+      <dd>A stable but sluggish job market, not a crisis<sup><a href="#src-1">[1]</a></sup>.</dd>
+      <dt>2. Is the economy overheating?</dt>
+      <dd>Not in jobs, because hiring is weak. Prices are rising mainly from energy: core inflation is a lower 2.6%<sup><a href="#src-13">[13]</a></sup>.</dd>
+      <dt>3. Is confidence strong or weak?</dt>
+      <dd>Weak to mixed (UMich 48.0; Conference Board 91.7)<sup><a href="#src-15">[15]</a><a href="#src-17">[17]</a></sup>.</dd>
+      <dt>4. Are consumers spending too much or too little?</dt>
+      <dd>About right for now, since GDP grew 3.4%<sup><a href="#src-18">[18]</a></sup>, but falling real wages could slow spending soon.</dd>
+      <dt>5. Which action best supports stability?</dt>
+      <dd>Holding rates steady.</dd>
+    </dl>
+  </div>
+
+  <div class="card advisory green">
+    <h3>Recommendation</h3>
+    <p><strong>I recommend the FOMC HOLD interest rates steady at 3.75%–4.00% at its December meeting.</strong> The Fed has two jobs: keep prices stable and keep employment high. Inflation is too high at 3.7%, but much of that comes from oil and energy prices tied to the Iran war, and raising interest rates can't produce more oil. Meanwhile, the job market is fragile: only 29,000 jobs were added in September, and earlier months were revised down. Another hike could tip a "low-hire" market into a "high-fire" one and push unemployment up. Cutting rates would be the wrong move too, because it could add fuel to inflation. Holding steady lets the September hike work its way through the economy while the Fed watches the next jobs and inflation reports. If unemployment rises above about 4.5%, the Fed should consider cutting; if core inflation keeps climbing, it should consider another hike.</p>
+  </div>
+</section>
+
+<!-- ACTION PLAN -->
+<section id="plan" class="section">
+  <div class="plan">
+    <h2>Coordinated Action Plan</h2>
+    <div class="plan-cols">
+      <div>
+        <h3>🏛️ Government (Fiscal)</h3>
+        <p>Maintain overall spending and taxes; redirect funds to job training and support for the long-term unemployed.</p>
+        <p class="goal"><b>Goal:</b> help job seekers without adding to inflation.</p>
+      </div>
+      <div>
+        <h3>🏦 Federal Reserve (Monetary)</h3>
+        <p>Hold the federal funds rate at 3.75%–4.00%; stay data-dependent.</p>
+        <p class="goal"><b>Goal:</b> let past hikes cool prices without breaking the job market.</p>
+      </div>
+    </div>
+    <p class="closing">Stable numbers, anxious people. The right move is <strong>steady hands, targeted help.</strong></p>
+  </div>
+</section>
+
+<!-- SOURCES -->
+<section id="sources" class="section">
+  <h2>Works Cited</h2>
+  <p class="muted">MLA 9th edition. Numbers match the bracketed markers on this page.</p>
+  <ol class="sources">
+    <li id="src-1">U.S. Bureau of Labor Statistics. "The Employment Situation — September 2026." <i>U.S. Department of Labor</i>, 2 Oct. 2026, <a href="https://www.bls.gov/news.release/archives/empsit_10022026.htm">www.bls.gov/news.release/archives/empsit_10022026.htm</a>.</li>
+    <li id="src-2">"Unemployment Rate (UNRATE)." <i>FRED, Federal Reserve Bank of St. Louis</i>, U.S. Bureau of Labor Statistics, <a href="https://fred.stlouisfed.org/series/UNRATE">fred.stlouisfed.org/series/UNRATE</a>. Accessed 4 Nov. 2026.</li>
+    <li id="src-3">Picchi, Aimee. "Employers across the U.S. Added 29,000 Jobs in September, Short of Forecasts." <i>CBS News</i>, 2 Oct. 2026, <a href="https://www.cbsnews.com/news/september-jobs-report-us-hiring-labor-market/">www.cbsnews.com/news/september-jobs-report-us-hiring-labor-market</a>.</li>
+    <li id="src-4">U.S. Bureau of Labor Statistics. "The Employment Situation — November 2025." <i>U.S. Department of Labor</i>, 16 Dec. 2025, <a href="https://www.bls.gov/news.release/archives/empsit_12162025.htm">www.bls.gov/news.release/archives/empsit_12162025.htm</a>.</li>
+    <li id="src-5">Board of Governors of the Federal Reserve System. "Federal Reserve Issues FOMC Statement." 16 Mar. 2022, <a href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20220316a.htm">www.federalreserve.gov/newsevents/pressreleases/monetary20220316a.htm</a>.</li>
+    <li id="src-6">Board of Governors of the Federal Reserve System. "Federal Reserve Issues FOMC Statement." 17 Sept. 2025, <a href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20250917a.htm">www.federalreserve.gov/newsevents/pressreleases/monetary20250917a.htm</a>.</li>
+    <li id="src-7">Board of Governors of the Federal Reserve System. "Federal Reserve Issues FOMC Statement." 16 Sept. 2026, <a href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm">www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm</a>.</li>
+    <li id="src-8">J.P. Morgan Wealth Management. "Fed Raises Rates at September Meeting." <i>Chase</i>, 17 Sept. 2026, <a href="https://www.chase.com/personal/investments/learning-and-insights/article/federal-reserve-raises-rates-officials-signal-one-more-hike-in-2026">www.chase.com/personal/investments/learning-and-insights/article/federal-reserve-raises-rates-officials-signal-one-more-hike-in-2026</a>.</li>
+    <li id="src-9">Lichtenberg, Nick. "Trump's War in Iran Is Costing the U.S. Economy 10,000 Jobs a Month, Goldman Sachs Says." <i>Fortune</i>, 26 Mar. 2026, <a href="https://fortune.com/2026/03/26/trump-iran-war-oil-shock-jobs-goldman-sachs-gen-z">fortune.com/2026/03/26/trump-iran-war-oil-shock-jobs-goldman-sachs-gen-z</a>.</li>
+    <li id="src-10">U.S. Bureau of Labor Statistics. "The Employment Situation — September 2023." <i>U.S. Department of Labor</i>, 6 Oct. 2023, <a href="https://www.bls.gov/news.release/archives/empsit_10062023.pdf">www.bls.gov/news.release/archives/empsit_10062023.pdf</a>.</li>
+    <li id="src-11">Wiseman, Paul. "U.S. Lost 92,000 Jobs Last Month and Unemployment Rate Rises to 4.4%." <i>PBS News</i>, Associated Press, 6 Mar. 2026, <a href="https://www.pbs.org/newshour/economy/u-s-lost-92000-jobs-last-month-and-unemployment-rate-rises-to-4-4">www.pbs.org/newshour/economy/u-s-lost-92000-jobs-last-month-and-unemployment-rate-rises-to-4-4</a>.</li>
+    <li id="src-12">Cerullo, Megan. "AI Job Cuts Are Rising, but Experts Say Layoffs Are Only Part of the Story." <i>CBS News</i>, 22 May 2026, <a href="https://www.cbsnews.com/news/ai-layoffs-hiring-entry-level-workers/">www.cbsnews.com/news/ai-layoffs-hiring-entry-level-workers</a>.</li>
+    <li id="src-13">"US Inflation Rate Tops Forecasts." <i>Trading Economics</i>, 14 Oct. 2026, <a href="https://tradingeconomics.com/united-states/inflation-cpi/news/591934">tradingeconomics.com/united-states/inflation-cpi/news/591934</a>.</li>
+    <li id="src-14">"U.S. Job Openings Little Changed at 7.1 Million in August." <i>Securities.io</i>, 29 Sept. 2026, <a href="https://www.securities.io/u-s-job-openings-little-changed-at-7-1-million-in-august/">www.securities.io/u-s-job-openings-little-changed-at-7-1-million-in-august</a>.</li>
+    <li id="src-15">Ferreira, Joana. "US Consumer Sentiment Revised Higher but Remains Weak." <i>Trading Economics</i>, 23 Oct. 2026, <a href="https://tradingeconomics.com/united-states/consumer-confidence/news/594700">tradingeconomics.com/united-states/consumer-confidence/news/594700</a>.</li>
+    <li id="src-16">Ferreira, Joana. "US Consumer Sentiment Revised to New Record Low." <i>Trading Economics</i>, 22 May 2026, <a href="https://tradingeconomics.com/united-states/consumer-confidence/news/553145">tradingeconomics.com/united-states/consumer-confidence/news/553145</a>.</li>
+    <li id="src-17">The Conference Board. "US Consumer Confidence Increased in October." <i>PR Newswire</i>, 27 Oct. 2026, <a href="https://www.prnewswire.com/news-releases/us-consumer-confidence-increased-in-october-302920731.html">www.prnewswire.com/news-releases/us-consumer-confidence-increased-in-october-302920731.html</a>.</li>
+    <li id="src-18">U.S. Bureau of Economic Analysis. "GDP (Advance Estimate), 3rd Quarter 2026." 29 Oct. 2026, <a href="https://www.bea.gov/news/2026/gdp-advance-estimate-3rd-quarter-2026">www.bea.gov/news/2026/gdp-advance-estimate-3rd-quarter-2026</a>.</li>
+    <li id="src-19">Horsley, Scott. "The U.S. Added Only 29,000 Jobs in September as Job Market Lacks Spark." <i>WUNC</i>, NPR, 2 Oct. 2026, <a href="https://www.wunc.org/2026-10-02/the-u-s-added-only-29-000-jobs-in-september-as-job-market-lacks-spark">www.wunc.org/2026-10-02/the-u-s-added-only-29-000-jobs-in-september-as-job-market-lacks-spark</a>.</li>
+    <li id="src-20">"US Consumer Confidence Rises for First Time in Four Months." <i>Bloomberg</i>, 27 Oct. 2026, <a href="https://www.bloomberg.com/news/articles/2026-10-27/us-consumer-confidence-increases-for-first-time-in-four-months">www.bloomberg.com/news/articles/2026-10-27/us-consumer-confidence-increases-for-first-time-in-four-months</a>.</li>
+    <li id="src-21">U.S. Bureau of Labor Statistics. "Unemployment Rate Little Changed at 4.2 Percent in September 2026." <i>The Economics Daily</i>, Oct. 2026, <a href="https://www.bls.gov/opub/ted/2026/unemployment-rate-little-changed-at-4-2-percent-in-september-2026.htm">www.bls.gov/opub/ted/2026/unemployment-rate-little-changed-at-4-2-percent-in-september-2026.htm</a>.</li>
+    <li id="src-22">Mutikani, Lucia. "U.S. Job Growth Nearly Stalls in September as Payrolls Rise Just 29,000." <i>Allwork.Space</i>, Reuters, 2 Oct. 2026, <a href="https://allwork.space/2026/10/u-s-job-growth-nearly-stalls-in-september-as-payrolls-rise-just-29000/">allwork.space/2026/10/u-s-job-growth-nearly-stalls-in-september-as-payrolls-rise-just-29000</a>.</li>
+    <li id="src-23">"Shares of Gross Domestic Product: Personal Consumption Expenditures (DPCERE1Q156NBEA)." <i>FRED, Federal Reserve Bank of St. Louis</i>, U.S. Bureau of Economic Analysis, <a href="https://fred.stlouisfed.org/series/DPCERE1Q156NBEA">fred.stlouisfed.org/series/DPCERE1Q156NBEA</a>. Accessed 4 Nov. 2026.</li>
+    <li id="src-24">Strategas Securities. "Significant Consumer Stimulus Arrives in 2026." <i>Baird Wealth — The Olson Group</i>, 2026, <a href="https://olsongroup.bairdwealth.com/resource-center/investment/significant-consumer-stimulus-arrives-in-2026">olsongroup.bairdwealth.com/resource-center/investment/significant-consumer-stimulus-arrives-in-2026</a>.</li>
+    <li id="src-25">Haring, Jordan. "CBO: FY 2026 Budget Deficit Totaled $2 Trillion." <i>American Action Forum</i>, 8 Oct. 2026, <a href="https://www.americanactionforum.org/insight/cbo-fy-2026-budget-deficit-totaled-2-trillion/">www.americanactionforum.org/insight/cbo-fy-2026-budget-deficit-totaled-2-trillion</a>.</li>
+    <li id="src-26">Board of Governors of the Federal Reserve System. "Federal Reserve Issues FOMC Statement." 28 Oct. 2026, <a href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm">www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm</a>.</li>
+    <li id="src-27">Board of Governors of the Federal Reserve System. "Meeting Calendars, Statements, and Minutes." <a href="https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm">www.federalreserve.gov/monetarypolicy/fomccalendars.htm</a>. Accessed 4 Nov. 2026.</li>
+    <li id="src-28">"Senate Confirms Kevin Warsh as Next Chair of the Federal Reserve." <i>KPBS</i>, NPR, 13 May 2026, <a href="https://www.kpbs.org/news/economy/2026/05/13/senate-confirms-kevin-warsh-as-next-chair-of-the-federal-reserve">www.kpbs.org/news/economy/2026/05/13/senate-confirms-kevin-warsh-as-next-chair-of-the-federal-reserve</a>.</li>
+  </ol>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">Created by Aarya Raut for "Evaluate the Economy." Data current as of October 30, 2026.</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"
+  integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"
+  integrity="sha384-oNtu+d18330MVFpltUTve1DatxCkkctlpA2AC3GulbVFOSqhHdDat3qHse/Lbuek" crossorigin="anonymous"></script>
+<script src="data/unrate.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
