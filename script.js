@@ -8,6 +8,8 @@ const fmtMonth = (ym) => {
 };
 const indexOf = (ym) => UNRATE.findIndex((d) => d.date === ym);
 
+const INK = "#1b1b1b", MUTED = "#6b665c", RULE = "#e2dccf", ACCENT = "#1f4e79";
+
 /* ---------- 1. Trendline ---------- */
 
 const EVENTS = [
@@ -32,14 +34,14 @@ function buildAnnotations(view, narrow) {
       type: "box",
       xMin: indexOf("2020-03"),
       xMax: last,
-      backgroundColor: "rgba(37, 99, 235, 0.07)",
+      backgroundColor: "rgba(31, 78, 121, 0.06)",
       borderWidth: 0,
       label: {
         display: view === "full",
         content: "Post-Pandemic Period",
         position: { x: "center", y: "end" },
-        color: "#1e40af",
-        font: { size: 12, weight: "bold" },
+        color: ACCENT,
+        font: { size: 12, weight: "600" },
         padding: 6,
       },
     },
@@ -50,7 +52,7 @@ function buildAnnotations(view, narrow) {
       yValue: v.gapY,
       content: narrow ? ["No Oct 2025", "data (shutdown)"] : ["No Oct 2025 data —", "gov't shutdown"],
       position: { x: "end", y: "center" },
-      color: "#64748b",
+      color: MUTED,
       font: { size: 10, style: "italic" },
       xAdjust: -6,
     },
@@ -61,9 +63,9 @@ function buildAnnotations(view, narrow) {
       type: "line",
       xMin: x,
       xMax: x,
-      borderColor: "rgba(15, 23, 42, 0.45)",
-      borderWidth: 1.5,
-      borderDash: [5, 4],
+      borderColor: "rgba(27, 27, 27, 0.4)",
+      borderWidth: 1,
+      borderDash: [4, 4],
     };
     ann["evl" + i] = {
       type: "label",
@@ -73,9 +75,9 @@ function buildAnnotations(view, narrow) {
       content: narrow ? String(i + 1) : e.long,
       position: narrow ? { x: "center", y: "start" } : { x: e.side, y: "start" },
       xAdjust: narrow ? 0 : e.side === "end" ? -4 : 4,
-      backgroundColor: "rgba(255, 255, 255, 0.9)",
-      color: "#0f172a",
-      font: { size: narrow ? 10 : 11, weight: "600" },
+      backgroundColor: "rgba(246, 244, 238, 0.92)",
+      color: INK,
+      font: { size: narrow ? 10 : 11, weight: "500" },
       padding: 3,
     };
   });
@@ -87,6 +89,8 @@ function initChart() {
   if (!canvas || typeof Chart === "undefined") return;
 
   const narrow = () => canvas.parentElement.clientWidth < 600;
+  Chart.defaults.font.family = '"IBM Plex Sans", system-ui, sans-serif';
+  Chart.defaults.color = MUTED;
   let view = "full";
 
   const chart = new Chart(canvas, {
@@ -96,9 +100,9 @@ function initChart() {
       datasets: [{
         label: "Unemployment rate (%)",
         data: UNRATE.map((d) => d.rate),
-        borderColor: "#2563eb",
-        backgroundColor: "#2563eb",
-        borderWidth: 2.5,
+        borderColor: ACCENT,
+        backgroundColor: ACCENT,
+        borderWidth: 2.25,
         pointRadius: 0,
         pointHoverRadius: 5,
         spanGaps: true,
@@ -112,7 +116,7 @@ function initChart() {
       scales: {
         x: {
           min: VIEWS.full.xMin,
-          title: { display: true, text: "Month", font: { weight: "bold" } },
+          title: { display: true, text: "Month", color: INK, font: { weight: "500" } },
           // one tick per January, labeled with just the year
           ticks: {
             maxRotation: 0,
@@ -123,11 +127,14 @@ function initChart() {
             },
           },
           grid: { display: false },
+          border: { color: INK },
         },
         y: {
           min: 0,
           max: 16,
-          title: { display: true, text: "Unemployment Rate (%)", font: { weight: "bold" } },
+          title: { display: true, text: "Unemployment Rate (%)", color: INK, font: { weight: "500" } },
+          grid: { color: RULE },
+          border: { display: false },
           ticks: { callback: (v) => v + "%" },
         },
       },
@@ -135,6 +142,8 @@ function initChart() {
         legend: { display: false },
         tooltip: {
           displayColors: false,
+          backgroundColor: INK,
+          cornerRadius: 0,
           filter: (item) => item.parsed.y !== null,
           callbacks: {
             title: () => "",
@@ -182,11 +191,11 @@ function fillTable() {
 /* ---------- 2. Vibe gauge ---------- */
 
 const ZONES = [
-  { name: "Panic", def: "extreme fear & severe drop", fill: "#dc2626", ink: "#fff" },
-  { name: "Concern", def: "growing anxiety & mild downturn", fill: "#f97316", ink: "#1e293b" },
-  { name: "Cautious", def: "neutral outlook, mixed signals", fill: "#facc15", ink: "#1e293b" },
-  { name: "Optimistic", def: "positive confidence & growth", fill: "#86efac", ink: "#1e293b" },
-  { name: "Exuberance", def: "high enthusiasm & boom", fill: "#16a34a", ink: "#fff" },
+  { name: "Panic", def: "extreme fear & severe drop", fill: "#a8322a", ink: "#fff" },
+  { name: "Concern", def: "growing anxiety & mild downturn", fill: "#cf7a43", ink: "#fff" },
+  { name: "Cautious", def: "neutral outlook, mixed signals", fill: "#dcb85a", ink: "#1b1b1b" },
+  { name: "Optimistic", def: "positive confidence & growth", fill: "#8daf7c", ink: "#1b1b1b" },
+  { name: "Exuberance", def: "high enthusiasm & boom", fill: "#2e6b3f", ink: "#fff" },
 ];
 // 0 = far left, 1 = far right. 0.45 sits inside Cautious (0.4–0.6), leaning toward Concern.
 const NEEDLE_POSITION = 0.45;
@@ -217,7 +226,7 @@ function initGauge() {
     path.setAttribute("d", `M ${x0} ${y0} A ${R} ${R} 0 0 1 ${x1} ${y1}`);
     path.setAttribute("fill", "none");
     path.setAttribute("stroke", z.fill);
-    path.setAttribute("stroke-width", "50");
+    path.setAttribute("stroke-width", "46");
 
     const label = document.createElementNS(NS, "text");
     label.setAttribute("x", xm);
@@ -240,7 +249,7 @@ function initGauge() {
   for (let i = 1; i < ZONES.length; i++) {
     const [xa, ya] = arcPoint(i / ZONES.length, R - 25), [xb, yb] = arcPoint(i / ZONES.length, R + 25);
     const sep = document.createElementNS(NS, "line");
-    Object.entries({ x1: xa, y1: ya, x2: xb, y2: yb, stroke: "#fff", "stroke-width": 2 })
+    Object.entries({ x1: xa, y1: ya, x2: xb, y2: yb, stroke: "#f6f4ee", "stroke-width": 3 })
       .forEach(([k, v]) => sep.setAttribute(k, v));
     g.appendChild(sep);
   }
@@ -267,20 +276,20 @@ function initGauge() {
 
 /* ---------- 3. Confidence loop ---------- */
 
-const GDP_CITE = '<sup><a href="#src-23">[23]</a></sup>';
+const GDP_CITE = '<sup><a href="#src-22">[22]</a></sup>';
 
 const LOOPS = {
   rises: {
-    label: "Showing: <strong>Unemployment RISES</strong> (downward spiral, the current risk)",
-    center: "🔁 Downward spiral",
-    button: "Show reverse direction ↔",
+    label: "Showing: <strong>unemployment rises</strong> (downward spiral, the current risk)",
+    center: "A downward spiral",
+    button: "Show reverse direction",
     boxes: [
-      ["📈", "Unemployment rises / hiring stalls", ""],
-      ["😟", "Consumer confidence falls", "Workers fear losing their job or not finding one."],
-      ["💰", "Spending falls", "Families save \"just in case\" and delay big purchases (cars, vacations, homes)."],
-      ["🏪", "Business revenue falls", "Stores and restaurants sell less, so they cut hours, freeze hiring, or lay off."],
-      ["📉", "GDP slows", `Consumer spending is about two-thirds of U.S. GDP${GDP_CITE}, so less spending means less output.`],
-      ["🔁", "More unemployment", "Loops back to step 1: a downward spiral."],
+      ["Unemployment rises / hiring stalls", ""],
+      ["Consumer confidence falls", "Workers fear losing their job or not finding one."],
+      ["Spending falls", "Families save \"just in case\" and delay big purchases (cars, vacations, homes)."],
+      ["Business revenue falls", "Stores and restaurants sell less, so they cut hours, freeze hiring, or lay off."],
+      ["GDP slows", `Consumer spending is about two-thirds of U.S. GDP${GDP_CITE}, so less spending means less output.`],
+      ["More unemployment", "Loops back to step 1: a downward spiral."],
     ],
     arrows: [
       "<b>Indicator → confidence:</b> job security is the #1 driver of how people feel about their own finances.",
@@ -292,16 +301,16 @@ const LOOPS = {
     ],
   },
   falls: {
-    label: "Showing: <strong>Unemployment FALLS</strong> (upward spiral)",
-    center: "🔁 Upward spiral",
-    button: "Show original direction ↔",
+    label: "Showing: <strong>unemployment falls</strong> (upward spiral)",
+    center: "An upward spiral",
+    button: "Show original direction",
     boxes: [
-      ["📉", "Unemployment falls / hiring picks up", ""],
-      ["😊", "Confidence rises", "Workers feel secure in their jobs."],
-      ["🛍️", "Spending rises", "Families make the big purchases they had been delaying."],
-      ["🏪", "Business revenue rises", "Firms add shifts and hire more workers."],
-      ["📈", "GDP grows", `Consumer spending is about two-thirds of GDP${GDP_CITE}, so more spending means more output.`],
-      ["🔁", "Even more hiring", "An upward spiral. If it overheats, it can push up inflation."],
+      ["Unemployment falls / hiring picks up", ""],
+      ["Confidence rises", "Workers feel secure in their jobs."],
+      ["Spending rises", "Families make the big purchases they had been delaying."],
+      ["Business revenue rises", "Firms add shifts and hire more workers."],
+      ["GDP grows", `Consumer spending is about two-thirds of GDP${GDP_CITE}, so more spending means more output.`],
+      ["Even more hiring", "An upward spiral. If it overheats, it can push up inflation."],
     ],
     arrows: [
       "<b>Indicator → confidence:</b> steady paychecks make people feel better about their finances.",
@@ -325,8 +334,8 @@ function initLoop() {
     const L = LOOPS[mode];
     grid.classList.toggle("up", mode === "falls");
     grid.querySelectorAll(".lbox").forEach((box, i) => {
-      const [icon, title, text] = L.boxes[i];
-      box.innerHTML = `<div class="ic" aria-hidden="true">${icon}</div><b>${i + 1}. ${title}</b>${text ? `<span>${text}</span>` : ""}`;
+      const [title, text] = L.boxes[i];
+      box.innerHTML = `<span class="n">${i + 1}</span><b>${title}</b>${text ? `<span>${text}</span>` : ""}`;
     });
     document.getElementById("loop-center").textContent = L.center;
     document.getElementById("loop-label").innerHTML = L.label;
