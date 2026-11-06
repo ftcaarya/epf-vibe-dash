@@ -96,7 +96,8 @@ sup a:hover { text-decoration: underline; }
 .seg button { border: 0; background: transparent; padding: 5px 14px; font: 500 0.82rem var(--sans); cursor: pointer; color: var(--ink); }
 .seg button + button { border-left: 1px solid var(--ink); }
 .seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
-.chart-box { position: relative; height: 440px; margin-top: 16px; }
+.chart-box { margin-top: 16px; }
+.chart-box img { display: block; width: 100%; height: auto; }
 .chart-source { font-size: 0.82rem; color: var(--muted); margin: 12px 0 0; max-width: 90ch; }
 .event-key {
   margin: 16px 0 0; padding: 12px 0 0 20px; border-top: 1px solid var(--rule);
@@ -258,7 +259,6 @@ sup a:hover { text-decoration: underline; }
   .fed-options .yes { order: -1; }
   .event-key { grid-template-columns: 1fr 1fr; }
   .sources { columns: 1; }
-  .chart-box { height: 360px; }
 }
 @media (max-width: 640px) {
   .wrap, .topnav-inner { padding-left: 16px; padding-right: 16px; }
@@ -273,7 +273,6 @@ sup a:hover { text-decoration: underline; }
   .fiscal-grid { grid-template-columns: 1fr; }
   .fcard:nth-child(odd) { border-right: 0; }
   .fcard { padding-left: 0; }
-  .chart-box { height: 300px; }
   .defense, .context { padding: 18px; }
   .loop { grid-template-columns: 1fr; grid-template-areas: none; }
   .loop > * { grid-area: auto !important; }

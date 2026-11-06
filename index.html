@@ -31,7 +31,7 @@
 <!-- HERO -->
 <header class="hero wrap" id="top">
   <p class="kicker">U.S. Economy &middot; Unemployment Rate &middot; October 2026</p>
-  <h1>Jobs &amp; Vibes: Is America Working — and Does It Feel Like It?</h1>
+  <h1>Jobs &amp; Vibes: Is America Working?</h1>
   <p class="dek">An economist's dashboard on the U.S. unemployment rate, October 2026</p>
   <p class="byline">By Aarya Raut &middot; Data as of October 30, 2026</p>
 
@@ -82,8 +82,7 @@
       </div>
     </div>
     <div class="chart-box">
-      <canvas id="unrateChart" role="img"
-        aria-label="Line chart of the U.S. unemployment rate from January 2019 to September 2026. It spikes to 14.8% in April 2020, falls to a low of 3.4% in 2023, rises to 4.5% in November 2025, and is 4.2% in September 2026. The period from March 2020 on is shaded as the post-pandemic period. October 2025 has no data."></canvas>
+      <img id="unrateChart" src="images/graphs/unrate_full.png" alt="Line chart of the U.S. unemployment rate from January 2019 to September 2026. It spikes to 14.8% in April 2020, falls to a low of 3.4% in 2023, rises to 4.5% in November 2025, and is 4.2% in September 2026. The period from March 2020 on is shaded as the post-pandemic period. October 2025 has no data." width="2384" height="1301">
     </div>
     <figcaption class="chart-source">Data: U.S. Bureau of Labor Statistics via FRED (UNRATE)<sup><a href="#src-2">[2]</a></sup>. Chart created by Aarya Raut. Shaded area: post-pandemic period (March 2020 on). There is no October 2025 value because the government shutdown stopped BLS from collecting it<sup><a href="#src-4">[4]</a></sup>.</figcaption>
 
@@ -470,10 +469,6 @@
 
 <footer class="footer">AI was used to help create visual elements and/or improve design. All economic analysis, persona development, and conclusions are my own work.</footer>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"
-  integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"
-  integrity="sha384-oNtu+d18330MVFpltUTve1DatxCkkctlpA2AC3GulbVFOSqhHdDat3qHse/Lbuek" crossorigin="anonymous"></script>
 <script src="data/unrate.js"></script>
 <script src="script.js"></script>
 </body>

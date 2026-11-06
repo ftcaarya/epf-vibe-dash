@@ -1,4 +1,4 @@
-// Jobs & Vibes dashboard: trendline chart, vibe gauge, confidence loop.
+// Jobs & Vibes dashboard: trendline chart images, vibe gauge, confidence loop.
 // Data comes from data/unrate.js (loaded as a script so the page also works from file://).
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -6,178 +6,35 @@ const fmtMonth = (ym) => {
   const [y, m] = ym.split("-");
   return `${MONTHS[Number(m) - 1]} ${y}`;
 };
-const indexOf = (ym) => UNRATE.findIndex((d) => d.date === ym);
-
-const INK = "#1b1b1b", MUTED = "#6b665c", RULE = "#e2dccf", ACCENT = "#1f4e79";
 
 /* ---------- 1. Trendline ---------- */
+// The chart images are made in Python (matplotlib) and live in images/graphs/.
+// The two buttons swap between the full view and the 2023-now view.
 
-const EVENTS = [
-  { date: "2020-04", long: "COVID lockdowns — record spike", lift: 0, narrowLift: 0, side: "start" },
-  { date: "2022-03", long: "Fed begins rate hikes", lift: 0, narrowLift: 0, side: "start" },
-  { date: "2025-09", long: "Fed starts cutting rates", lift: 0, narrowLift: 0, side: "end" },
-  { date: "2025-11", long: "4.5% — 4-year high", lift: 1, narrowLift: 1, side: "end" },
-  { date: "2026-03", long: "Iran war oil shock", lift: 2, narrowLift: 0, side: "end" },
-  { date: "2026-09", long: "Fed hikes for 1st time since 2023", lift: 3, narrowLift: 1, side: "end" },
-];
-
-const VIEWS = {
-  full: { xMin: 0, yMin: 0, yMax: 16, topY: 15.5, step: 1.3, gapY: 1.2 },
-  zoom: { xMin: indexOf("2023-01"), yMin: 3, yMax: 5, topY: 4.95, step: 0.16, gapY: 3.25 },
+const CHART_VIEWS = {
+  full: {
+    src: "images/graphs/unrate_full.png",
+    alt: "Line chart of the U.S. unemployment rate from January 2019 to September 2026. It spikes to 14.8% in April 2020, falls to a low of 3.4% in 2023, rises to 4.5% in November 2025, and is 4.2% in September 2026. The period from March 2020 on is shaded as the post-pandemic period. October 2025 has no data.",
+  },
+  zoom: {
+    src: "images/graphs/unrate_zoom.png",
+    alt: "Line chart of the U.S. unemployment rate from January 2023 to September 2026, zoomed to the 3% to 5% range. It rises from about 3.5% in 2023 to 4.5% in November 2025, then eases to 4.2% by September 2026. October 2025 has no data.",
+  },
 };
 
-function buildAnnotations(view, narrow) {
-  const v = VIEWS[view];
-  const last = UNRATE.length - 1;
-  const ann = {
-    band: {
-      type: "box",
-      xMin: indexOf("2020-03"),
-      xMax: last,
-      backgroundColor: "rgba(31, 78, 121, 0.06)",
-      borderWidth: 0,
-      label: {
-        display: view === "full",
-        content: "Post-Pandemic Period",
-        position: { x: "center", y: "end" },
-        color: ACCENT,
-        font: { size: 12, weight: "600" },
-        padding: 6,
-      },
-    },
-    gap: {
-      type: "label",
-      display: !narrow,
-      xValue: indexOf("2025-10"),
-      yValue: v.gapY,
-      content: narrow ? ["No Oct 2025", "data (shutdown)"] : ["No Oct 2025 data —", "gov't shutdown"],
-      position: { x: "end", y: "center" },
-      color: MUTED,
-      font: { size: 10, style: "italic" },
-      xAdjust: -6,
-    },
-  };
-  EVENTS.forEach((e, i) => {
-    const x = indexOf(e.date);
-    ann["ev" + i] = {
-      type: "line",
-      xMin: x,
-      xMax: x,
-      borderColor: "rgba(27, 27, 27, 0.4)",
-      borderWidth: 1,
-      borderDash: [4, 4],
-    };
-    ann["evl" + i] = {
-      type: "label",
-      xValue: x,
-      // on phones, label each line with its number from the event key below the chart
-      yValue: v.topY - (narrow ? e.narrowLift : e.lift) * v.step,
-      content: narrow ? String(i + 1) : e.long,
-      position: narrow ? { x: "center", y: "start" } : { x: e.side, y: "start" },
-      xAdjust: narrow ? 0 : e.side === "end" ? -4 : 4,
-      backgroundColor: "rgba(246, 244, 238, 0.92)",
-      color: INK,
-      font: { size: narrow ? 10 : 11, weight: "500" },
-      padding: 3,
-    };
-  });
-  return ann;
-}
-
 function initChart() {
-  const canvas = document.getElementById("unrateChart");
-  if (!canvas || typeof Chart === "undefined") return;
+  const img = document.getElementById("unrateChart");
+  if (!img) return;
 
-  const narrow = () => canvas.parentElement.clientWidth < 600;
-  Chart.defaults.font.family = '"IBM Plex Sans", system-ui, sans-serif';
-  Chart.defaults.color = MUTED;
-  let view = "full";
-
-  const chart = new Chart(canvas, {
-    type: "line",
-    data: {
-      labels: UNRATE.map((d) => fmtMonth(d.date)),
-      datasets: [{
-        label: "Unemployment rate (%)",
-        data: UNRATE.map((d) => d.rate),
-        borderColor: ACCENT,
-        backgroundColor: ACCENT,
-        borderWidth: 2.25,
-        pointRadius: 0,
-        pointHoverRadius: 5,
-        spanGaps: true,
-        tension: 0.15,
-      }],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: "index", intersect: false },
-      scales: {
-        x: {
-          min: VIEWS.full.xMin,
-          title: { display: true, text: "Month", color: INK, font: { weight: "500" } },
-          // one tick per January, labeled with just the year
-          ticks: {
-            maxRotation: 0,
-            autoSkip: false,
-            callback(value) {
-              const d = UNRATE[value].date;
-              return d.endsWith("-01") ? d.slice(0, 4) : null;
-            },
-          },
-          grid: { display: false },
-          border: { color: INK },
-        },
-        y: {
-          min: 0,
-          max: 16,
-          title: { display: true, text: "Unemployment Rate (%)", color: INK, font: { weight: "500" } },
-          grid: { color: RULE },
-          border: { display: false },
-          ticks: { callback: (v) => v + "%" },
-        },
-      },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          displayColors: false,
-          backgroundColor: INK,
-          cornerRadius: 0,
-          filter: (item) => item.parsed.y !== null,
-          callbacks: {
-            title: () => "",
-            label: (ctx) => `${ctx.label}: ${ctx.parsed.y.toFixed(1)}%`,
-          },
-        },
-        annotation: { annotations: buildAnnotations("full", narrow()) },
-      },
-    },
-  });
-
-  function setView(next) {
-    view = next;
-    const v = VIEWS[view];
-    chart.options.scales.x.min = v.xMin;
-    chart.options.scales.y.min = v.yMin;
-    chart.options.scales.y.max = v.yMax;
-    chart.options.scales.y.ticks.stepSize = view === "zoom" ? 0.25 : undefined;
-    chart.options.plugins.annotation.annotations = buildAnnotations(view, narrow());
-    chart.update();
+  function setView(view) {
+    img.src = CHART_VIEWS[view].src;
+    img.alt = CHART_VIEWS[view].alt;
     document.getElementById("view-full").setAttribute("aria-pressed", String(view === "full"));
     document.getElementById("view-zoom").setAttribute("aria-pressed", String(view === "zoom"));
   }
 
   document.getElementById("view-full").addEventListener("click", () => setView("full"));
   document.getElementById("view-zoom").addEventListener("click", () => setView("zoom"));
-
-  let wasNarrow = narrow();
-  window.addEventListener("resize", () => {
-    if (narrow() !== wasNarrow) {
-      wasNarrow = narrow();
-      setView(view);
-    }
-  });
 }
 
 function fillTable() {
